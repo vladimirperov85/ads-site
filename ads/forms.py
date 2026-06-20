@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Ad
 
 
 class RegisterForm(UserCreationForm):
@@ -22,3 +23,16 @@ class LoginForm(AuthenticationForm):
     """Форма входа пользователя"""
     username = forms.CharField(label='Имя пользователя')
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+
+
+class AdForm(forms.ModelForm):
+    """Форма объявления"""
+    class Meta:
+        model = Ad
+        fields = ('title', 'description', 'price', 'image')
+        labels = {
+            'title': 'Заголовок',
+            'description': 'Описание',
+            'price': 'Цена',
+            'image': 'Изображение',
+        }

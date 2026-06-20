@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать объявление{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Создать объявление</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.description.label }}</label>
+                        {{ form.description }}
+                        <small class="form-text text-muted">Опишите товар или услугу подробнее</small>
+                        {% if form.description.errors %}
+                            <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.price.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₽</span>
+                            {{ form.price }}
+                        </div>
+                        {% if form.price.errors %}
+                            <div class="text-danger">{{ form.price.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.image.label }}</label>
+                        {{ form.image }}
+                        <small class="form-text text-muted">Опционально</small>
+                        {% if form.image.errors %}
+                            <div class="text-danger">{{ form.image.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">Создать объявление</button>
+                </form>
+                <hr>
+                <a href="{% url 'ads:ad_list' %}" class="btn btn-outline-secondary w-100">Отмена</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
