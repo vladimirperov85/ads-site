@@ -43,7 +43,6 @@ def logout_view(request):
     return redirect('ads:login')
 
 
-{"text": "def ad_list(request):\n    \"\"\"Список всех объявлений\"\"\"\n    ads = Ad.objects.all()\n    return render(request, 'ads/ad_list.html', {'ads': ads})\n\n\ndef ad_detail(request, pk):\n    \"\"\"Детальный просмотр объяв��ения\"\"\"\n    ad = get_object_or_404(Ad, pk=pk)\n    return render(request, 'ads/ad_detail.html', {'ad': ad})"}
 
 
 @login_required
