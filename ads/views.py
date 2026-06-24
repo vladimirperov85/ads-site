@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from .forms import RegisterForm, LoginForm, AdForm
+from .forms import RegisterForm, LoginForm, AdForm, AdFilterForm
 from .models import Ad
 
 
@@ -43,6 +43,42 @@ def logout_view(request):
     return redirect('ads:login')
 
 
+def ad_list(request):
+    """Список всех объявлений с фильтрацией"""
+    # Получаем форму фильтрации из GET-параметров
+    filter_form = AdFilterForm(request.GET)
+    
+    # Получаем список всех объявлений
+    ads = Ad.objects.select_related('author').all()
+    
+    # Применяем фильтрацию если форма валидна
+    if filter_form.is_valid():
+        category = filter_form.cleaned_data.get('category')
+        car_brand = filter_form.cleaned_data.get('car_brand')
+        search = filter_form.cleaned_data.get('search')
+        
+        # Фильтрация по категории
+        if category:
+            ads = ads.filter(category=category)
+        
+        # Фильтрация по бренду
+        if car_brand:
+            ads = ads.filter(car_brand=car_brand)
+        
+        # Поиск по названию или описанию
+        if search:
+            ads = ads.filter(title__icontains=search) | ads.filter(description__icontains=search)
+    
+    return render(request, 'ads/ad_list.html', {
+        'ads': ads,
+        'filter_form': filter_form,
+    })
+
+
+def ad_detail(request, pk):
+    """Детальное описание объявления"""
+    ad = get_object_or_404(Ad, pk=pk)
+    return render(request, 'ads/ad_detail.html', {'ad': ad})
 
 
 @login_required

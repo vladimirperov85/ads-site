@@ -8,6 +8,29 @@
     <a href="{% url 'ads:ad_create' %}" class="btn btn-primary">Создать объявление</a>
 </div>
 
+<!-- Форма фильтрации -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label for="id_category" class="form-label">Категория:</label>
+                {{ filter_form.category }}
+            </div>
+            <div class="col-auto">
+                <label for="id_car_brand" class="form-label">Бренд:</label>
+                {{ filter_form.car_brand }}
+            </div>
+            <div class="col-auto">
+                <label for="id_search" class="form-label">Поиск:</label>
+                {{ filter_form.search }}
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% if ads %}
     <div class="row">
         {% for ad in ads %}

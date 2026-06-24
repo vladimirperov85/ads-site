@@ -49,6 +49,24 @@
                         {% endif %}
                     </div>
                     
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.category.label }}</label>
+                        {{ form.category }}
+                        <small class="form-text text-muted">{{ form.category.help_text }}</small>
+                        {% if form.category.errors %}
+                            <div class="text-danger">{{ form.category.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.car_brand.label }}</label>
+                        {{ form.car_brand }}
+                        <small class="form-text text-muted">{{ form.car_brand.help_text }}</small>
+                        {% if form.car_brand.errors %}
+                            <div class="text-danger">{{ form.car_brand.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
                     <button type="submit" class="btn btn-success w-100">Создать объявление</button>
                 </form>
                 <hr>

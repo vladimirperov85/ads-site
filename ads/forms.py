@@ -29,10 +29,35 @@ class AdForm(forms.ModelForm):
     """Форма объявления"""
     class Meta:
         model = Ad
-        fields = ('title', 'description', 'price', 'image')
+        fields = ('title', 'description', 'price', 'image', 'category', 'car_brand')
         labels = {
             'title': 'Заголовок',
             'description': 'Описание',
             'price': 'Цена',
             'image': 'Изображение',
+            'category': 'Категория',
+            'car_brand': 'Бренд',
         }
+        help_texts = {
+            'category': 'Выберите тип автомобиля',
+            'car_brand': 'Выберите марку автомобиля',
+        }
+
+
+class AdFilterForm(forms.Form):
+    """Форма фильтрации объявлений"""
+    category = forms.ChoiceField(
+        choices=[('', 'Все категории')] + Ad.CAR_CATEGORIES,
+        required=False,
+        label='Категория'
+    )
+    car_brand = forms.ChoiceField(
+        choices=[('', 'Все бренды')] + Ad.CAR_BRANDS,
+        required=False,
+        label='Бренд'
+    )
+    search = forms.CharField(
+        required=False,
+        label='Поиск',
+        widget=forms.TextInput(attrs={'placeholder': 'Поиск по названию или описанию'})
+    )
