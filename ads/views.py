@@ -43,41 +43,39 @@ def logout_view(request):
     return redirect('ads:login')
 
 
+# ... (все импорты остаются)
+from django.db.models import Q
+import re  # ← добавьте эту строку в начало
+
 def ad_list(request):
     """Список всех объявлений с фильтрацией"""
-    # Получаем форму фильтрации
     filter_form = AdFilterForm(request.GET)
-    
-    # Получаем список всех объявлений
     ads = Ad.objects.select_related('author').all()
-    
-    # Применяем фильтрацию если форма валидна
+
     if filter_form.is_valid():
         category = filter_form.cleaned_data.get('category')
         car_brand = filter_form.cleaned_data.get('car_brand')
         search = filter_form.cleaned_data.get('search')
-        
-        # Фильтрация по категории
+
         if category:
             ads = ads.filter(category=category)
-        
-        # Фильтрация по бренду
+
         if car_brand:
             ads = ads.filter(car_brand=car_brand)
+
         
-        # Поиск по названию или описанию
-    if search and search.strip():
-        search_term = search.strip()
-        ads = ads.filter(
-        Q(title__icontains=search_term) | Q(description__icontains=search_term)
-    )
-        
-    
+        if search and search.strip():
+            search_term = search.strip()  # НЕ используем re.escape!
+            ads = ads.filter(
+                Q(title__iregex=search_term) | Q(description__iregex=search_term)
+            )
+
     return render(request, 'ads/ad_list.html', {
         'ads': ads,
         'filter_form': filter_form,
     })
-
+        
+    
 
 def ad_detail(request, pk):
     """Детальное описание объявления"""
