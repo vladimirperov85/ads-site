@@ -45,7 +45,7 @@ def logout_view(request):
 
 def ad_list(request):
     """Список всех объявлений с фильтрацией"""
-    # Получаем форму фильтрации из GET-параметров
+    # Получаем форму фильтрации
     filter_form = AdFilterForm(request.GET)
     
     # Получаем список всех объявлений
