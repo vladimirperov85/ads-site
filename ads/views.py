@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from .forms import RegisterForm, LoginForm, AdForm, AdFilterForm
 from .models import Ad
-
+from django.db.models import Q
 
 def home_view(request):
     """Главная страница"""
@@ -66,8 +66,12 @@ def ad_list(request):
             ads = ads.filter(car_brand=car_brand)
         
         # Поиск по названию или описанию
-        if search:
-            ads = ads.filter(title__icontains=search) | ads.filter(description__icontains=search)
+    if search and search.strip():
+        search_term = search.strip()
+        ads = ads.filter(
+        Q(title__icontains=search_term) | Q(description__icontains=search_term)
+    )
+        
     
     return render(request, 'ads/ad_list.html', {
         'ads': ads,
