@@ -13,4 +13,6 @@ urlpatterns = [
     path('ad/create/', views.ad_create, name='ad_create'), # доступна тольки для зареєстрованих пользователей
     path('ad/<int:pk>/update/', views.ad_update, name='ad_update'),
     path('ad/<int:pk>/delete/', views.ad_delete, name='ad_delete'),
+    path('profile/<int:pk>/', views.profile_view, name='profile'),
 ]
+

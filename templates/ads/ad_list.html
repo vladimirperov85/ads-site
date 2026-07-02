@@ -47,7 +47,9 @@
                         <h5 class="card-title">{{ ad.title }}</h5>
                         <p class="card-text">{{ ad.description|truncatewords:15 }}</p>
                         <p class="card-text fw-bold">Цена: {{ ad.price }} ₽</p>
-                        <p class="card-text text-muted">Автор: {{ ad.author.username }}</p>
+                        <p class="card-text text-muted">
+                            Автор: <a href="{% url 'ads:profile' pk=ad.author.pk %}">{{ ad.author.username }}</a>
+                        </p>
                         <p class="card-text text-muted small">Дата: {{ ad.created_at|date:"d.m.Y H:i" }}</p>
                         <a href="{% url 'ads:ad_detail' pk=ad.pk %}" class="btn btn-outline-primary">Подробнее</a>
                         

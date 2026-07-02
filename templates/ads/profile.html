@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h3>Профиль пользователя</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ user.username }}</h5>
+                <p class="card-text">
+                    <strong>Email:</strong> {{ user.email|default:"Не указан" }}<br>
+                    <strong>На сайте с:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mb-3">Объявления пользователя</h2>
+
+{% if ads %}
+    <div class="row">
+        {% for ad in ads %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if ad.image %}
+                        <img src="{{ ad.image.url }}" class="card-img-top" alt="{{ ad.title }}">
+                    {% else %}
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span class="text-white">Нет изображения</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ad.title }}</h5>
+                        <p class="card-text">{{ ad.description|truncatewords:10 }}</p>
+                        <p class="card-text fw-bold">{{ ad.price }} ₽</p>
+                        <a href="{% url 'ads:ad_detail' pk=ad.pk %}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        У этого пользователя пока нет объявлений.
+    </div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{% url 'ads:ad_list' %}" class="btn btn-secondary">Вернуться к списку объявлений</a>
+</div>
+{% endblock %}

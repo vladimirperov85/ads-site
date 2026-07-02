@@ -6,7 +6,7 @@ from .models import Ad
 
 class RegisterForm(UserCreationForm):
     """Форма регистрации пользователя"""
-    email = forms.EmailField(required=True, label='Email')
+    email = forms.EmailField(required=False, label='Email')
 
     class Meta:
         model = User

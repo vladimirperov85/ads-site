@@ -5,6 +5,9 @@ from django.views.generic import TemplateView
 from .forms import RegisterForm, LoginForm, AdForm, AdFilterForm
 from .models import Ad
 from django.db.models import Q
+from django.contrib.auth.models import User
+from django.db.models import Q
+import re 
 
 def home_view(request):
     """Главная страница"""
@@ -43,9 +46,6 @@ def logout_view(request):
     return redirect('ads:login')
 
 
-# ... (все импорты остаются)
-from django.db.models import Q
-import re  # ← добавьте эту строку в начало
 
 def ad_list(request):
     """Список всех объявлений с фильтрацией"""
@@ -120,3 +120,17 @@ def ad_delete(request, pk):
         ad.delete()
         return redirect('ads:ad_list')
     return render(request, 'ads/ad_delete.html', {'ad': ad})
+
+
+def profile_view(request, pk):
+    """Просмотр профиля пользователя и его объявлений"""
+    # Находим пользователя или возвращаем 404, если его нет
+    user = get_object_or_404(User, pk=pk)
+    
+    # Получаем все объявления этого автора
+    ads = Ad.objects.filter(author=user)
+    
+    return render(request, 'ads/profile.html', {
+        'user': user,
+        'ads': ads
+    })
