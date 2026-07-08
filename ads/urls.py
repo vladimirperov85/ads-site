@@ -14,5 +14,6 @@ urlpatterns = [
     path('ad/<int:pk>/update/', views.ad_update, name='ad_update'),
     path('ad/<int:pk>/delete/', views.ad_delete, name='ad_delete'),
     path('profile/<int:pk>/', views.profile_view, name='profile'),
+    path('ad/<int:pk>/like/',views.ad_like,name = 'ad_like'),
 ]
 

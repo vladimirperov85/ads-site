@@ -20,11 +20,26 @@
                 
                 <div class="alert alert-info">
                     <strong>Автор:</strong> {{ ad.author.username }}<br>
-                    <strong>Дата создания:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}
+                    <strong>Дата создания:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}<br>
+                    <strong>Лайки:</strong> {{ ad.likes.count }}
                 </div>
                 
+                <!-- Кнопка лайка -->
+                <form method="post" action="{% url 'ads:ad_like' pk=ad.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        {% if user in ad.likes.all %}
+                            <button type="submit" class="btn btn-danger">Убрать лайк</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-outline-secondary">Постваить лайк</button>
+                        {% endif %}
+                    {% else %}
+                        <span class="text-muted">Войдите, чтобы лайкнуть</span>
+                    {% endif %}
+                </form>
+                
                 {% if ad.author == user %}
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 mt-3">
                         <a href="{% url 'ads:ad_update' pk=ad.pk %}" class="btn btn-warning">Редактировать</a>
                         <a href="{% url 'ads:ad_delete' pk=ad.pk %}" class="btn btn-danger">Удалить</a>
                     </div>

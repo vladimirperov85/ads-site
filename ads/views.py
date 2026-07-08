@@ -134,3 +134,14 @@ def profile_view(request, pk):
         'user': user,
         'ads': ads
     })
+    
+@login_required
+def ad_like(request,pk):
+    # поставить или убрать лайк
+    ad = get_object_or_404(Ad,pk=pk)
+    if request.user in ad.likes.all():
+        ad.likes.remove(request.user)
+    else:
+        ad.likes.add(request.user)
+
+    return redirect(request.META.get('HTTP_REFERER',ad.get_absolute_url()))

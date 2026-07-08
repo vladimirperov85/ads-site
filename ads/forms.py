@@ -42,6 +42,7 @@ class AdForm(forms.ModelForm):
             'category': 'Выберите тип автомобиля',
             'car_brand': 'Выберите марку автомобиля',
         }
+        
 
 
 class AdFilterForm(forms.Form):

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.urls import reverse
 
 
 class Ad(models.Model):
@@ -31,6 +33,7 @@ class Ad(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     image = models.ImageField(upload_to='ads/', blank=True, null=True, verbose_name='Изображение')
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='лайки', blank=True)
     
     # Новые поля для фильтрации
     category = models.CharField(
@@ -46,6 +49,9 @@ class Ad(models.Model):
     
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('ads:ad_detail', kwargs={'pk': self.pk})
     
     class Meta:
         verbose_name = 'Объявление'

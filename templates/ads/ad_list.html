@@ -47,11 +47,29 @@
                         <h5 class="card-title">{{ ad.title }}</h5>
                         <p class="card-text">{{ ad.description|truncatewords:15 }}</p>
                         <p class="card-text fw-bold">Цена: {{ ad.price }} ₽</p>
+                        <p class="card-text">
+                            <span class="badge bg-info text-dark">Категория: {{ ad.get_category_display }}</span>
+                            <span class="badge bg-info text-dark">Бренд: {{ ad.get_car_brand_display }}</span>
+                        </p>
                         <p class="card-text text-muted">
                             Автор: <a href="{% url 'ads:profile' pk=ad.author.pk %}">{{ ad.author.username }}</a>
                         </p>
                         <p class="card-text text-muted small">Дата: {{ ad.created_at|date:"d.m.Y H:i" }}</p>
                         <a href="{% url 'ads:ad_detail' pk=ad.pk %}" class="btn btn-outline-primary">Подробнее</a>
+                        
+                        <!-- Кнопка лайка -->
+                        <form method="post" action="{% url 'ads:ad_like' pk=ad.pk %}" style="display: inline;">
+                            {% csrf_token %}
+                            {% if user.is_authenticated %}
+                                {% if user in ad.likes.all %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Убрать лайк ({{ ad.likes.count }})</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Поставить лайк ({{ ad.likes.count }})</button>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted small">Войдите, чтобы лайкнуть</span>
+                            {% endif %}
+                        </form>
                         
                         {% if ad.author == user %}
                             <div class="d-flex gap-2 mt-2">
